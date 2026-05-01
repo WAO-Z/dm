@@ -296,6 +296,8 @@
    border-radius: 8px;
    background: var(--panel);
    box-shadow: 0 16px 42px rgba(0, 0, 0, 0.22);
+   content-visibility: auto;
+   contain-intrinsic-size: 620px;
    opacity: 0;
    transform: translateY(18px);
    animation: cardEnter 520ms ease forwards;
@@ -508,12 +510,13 @@
  .magnet-list {
    display: grid;
    gap: 10px;
-   max-height: 0;
+   height: 0;
    margin-top: 0;
    overflow: hidden;
    opacity: 0;
    transform: translateY(-6px);
-   transition: max-height 260ms ease, margin-top 260ms ease, opacity 200ms ease, transform 220ms ease;
+   will-change: height, opacity, transform;
+   transition: height 220ms ease, margin-top 180ms ease, opacity 180ms ease, transform 180ms ease;
  }
 
  .magnet-list[hidden] {
@@ -522,7 +525,6 @@
 
  /* 磁力链接展开动画：默认折叠，点击后滑入显示。 */
  .magnet-list.is-open {
-   max-height: 360px;
    margin-top: 12px;
    opacity: 1;
    transform: translateY(0);
@@ -676,5 +678,159 @@
    .hero-panel {
      padding: 26px;
      background-size: auto 120%;
+   }
+ }
+
+ @media (max-width: 640px) {
+   .app-shell {
+     width: min(100% - 20px, 1180px);
+     padding: 16px 0 78px;
+   }
+
+   .hero-panel {
+     min-height: 190px;
+     padding: 22px;
+     background-position: right -42px center;
+   }
+
+   h1 {
+     font-size: clamp(2rem, 12vw, 3.1rem);
+   }
+
+   .hero-text {
+     max-width: 260px;
+     font-size: 0.96rem;
+   }
+
+   .hero-stats {
+     grid-template-columns: repeat(2, minmax(0, 1fr));
+   }
+
+   .hero-stats span {
+     padding: 12px;
+   }
+
+   .toolbar {
+     gap: 12px;
+     margin-top: 14px;
+     padding: 12px;
+   }
+
+   input,
+   .select-trigger {
+     min-height: 48px;
+     font-size: 1rem;
+   }
+
+   .select-menu button {
+     min-height: 42px;
+   }
+
+   .anime-grid {
+     grid-template-columns: 1fr;
+     gap: 14px;
+   }
+
+   .anime-card {
+     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+     animation-duration: 380ms;
+   }
+
+   .card-content {
+     gap: 12px;
+     padding: 14px;
+   }
+
+   h2 {
+     font-size: 1.04rem;
+   }
+
+   .description {
+     font-size: 0.95rem;
+   }
+
+   .magnet-toggle {
+     min-height: 46px;
+   }
+
+   .magnet-item {
+     padding: 10px 8px 10px 10px;
+   }
+
+   .copy-button {
+     min-height: 38px;
+     min-width: 62px;
+   }
+
+   .site-footer {
+     margin-top: 32px;
+     padding: 20px 8px 0;
+     font-size: 0.86rem;
+   }
+
+   .toast {
+     width: max-content;
+     max-width: calc(100% - 92px);
+     bottom: 22px;
+   }
+
+   .back-to-top {
+     right: 14px;
+     bottom: 18px;
+     width: 44px;
+     height: 44px;
+     box-shadow: 0 10px 24px rgba(0, 0, 0, 0.26);
+   }
+ }
+
+ @media (max-width: 420px) {
+   .app-shell {
+     width: min(100% - 16px, 1180px);
+   }
+
+   .hero-panel {
+     padding: 18px;
+   }
+
+   .hero-stats strong {
+     font-size: 1.35rem;
+   }
+
+   .genre-pill {
+     padding: 4px 7px;
+     font-size: 0.7rem;
+   }
+
+   .rating-badge {
+     right: 10px;
+     top: 10px;
+     padding: 6px 9px;
+   }
+
+   .magnet-item {
+     grid-template-columns: 1fr;
+   }
+
+   .copy-button {
+     width: 100%;
+   }
+ }
+
+ @media (hover: none) {
+   .anime-card:hover {
+     transform: none;
+     border-color: var(--line);
+     box-shadow: 0 10px 28px rgba(0, 0, 0, 0.2);
+   }
+
+   .anime-card:hover .cover,
+   .copy-button:hover,
+   .back-to-top:hover {
+     transform: none;
+   }
+
+   .copy-button:hover,
+   .back-to-top:hover {
+     box-shadow: none;
    }
  }

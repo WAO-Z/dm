@@ -393,6 +393,28 @@ const genreName = {
   ova: "OVA"
 };
 
+const SELECT_ALL_VALUE = "all";
+const DEFAULT_SORT_VALUE = "id";
+
+const uiText = {
+  resultCount: (count) => `找到 ${count} 部作品`,
+  emptyState: "没有匹配的作品，换个筛选条件试试。",
+  coverAlt: (title) => `${title} 封面`,
+  descriptionExpand: "展开简介",
+  descriptionCollapse: "收起简介",
+  magnetExpand: "展开磁力链接",
+  magnetCollapse: "收起磁力链接",
+  copy: "复制",
+  copySuccessMark: "✓",
+  copySuccessToast: "已复制磁力链接",
+  copyFailureToast: "复制失败，请手动复制"
+};
+
+const metaIcons = {
+  calendar: '<svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="3"/></svg>',
+  play: '<svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg>'
+};
+
 const grid = document.querySelector("#animeGrid");
 const template = document.querySelector("#animeCardTemplate");
 const searchInput = document.querySelector("#searchInput");
@@ -432,6 +454,9 @@ function initFilters() {
 // 根据搜索、类型、年份和排序条件返回最终列表。
 function getFilteredAnime() {
   const keyword = searchInput.value.trim().toLowerCase();
+  const genreValue = getSelectValue(genreFilter);
+  const yearValue = getSelectValue(yearFilter);
+  const sortValue = getSelectValue(sortFilter);
 
   return animeData
     .filter((anime) => {
@@ -439,16 +464,13 @@ function getFilteredAnime() {
         .join(" ")
         .toLowerCase()
         .includes(keyword);
-      const genreValue = getSelectValue(genreFilter);
-      const yearValue = getSelectValue(yearFilter);
-      const matchesGenre = genreValue === "all" || anime.genre === genreValue;
-      const matchesYear = yearValue === "all" || anime.year === yearValue;
+      const matchesGenre = genreValue === SELECT_ALL_VALUE || anime.genre === genreValue;
+      const matchesYear = yearValue === SELECT_ALL_VALUE || anime.year === yearValue;
 
       return matchesKeyword && matchesGenre && matchesYear;
     })
     .sort((a, b) => {
-      const sortValue = getSelectValue(sortFilter);
-      if (sortValue === "id") return a.id - b.id;
+      if (sortValue === DEFAULT_SORT_VALUE) return a.id - b.id;
       if (sortValue === "year") return Number(b.year) - Number(a.year);
       if (sortValue === "title") return a.title.localeCompare(b.title, "zh-CN");
       return b.rating - a.rating;
@@ -460,12 +482,7 @@ function getSelectValue(select) {
 }
 
 function getMetaIcon(type) {
-  const icons = {
-    calendar: '<svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="3"/></svg>',
-    play: '<svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg>'
-  };
-
-  return icons[type];
+  return metaIcons[type] || "";
 }
 
 function setSelectValue(select, value) {
@@ -552,14 +569,84 @@ function loadCover(cover) {
   cover.src = cover.dataset.src;
 }
 
+function expandMagnetList(list) {
+  list.hidden = false;
+  list.style.height = "0px";
+
+  requestAnimationFrame(() => {
+    list.classList.add("is-open");
+    list.style.height = `${list.scrollHeight}px`;
+  });
+
+  list.addEventListener("transitionend", function handleExpand(event) {
+    if (event.propertyName !== "height") return;
+    list.removeEventListener("transitionend", handleExpand);
+    if (list.classList.contains("is-open")) list.style.height = "auto";
+  });
+}
+
+function collapseMagnetList(list) {
+  list.style.height = `${list.scrollHeight}px`;
+
+  requestAnimationFrame(() => {
+    list.classList.remove("is-open");
+    list.style.height = "0px";
+  });
+
+  list.addEventListener("transitionend", function handleCollapse(event) {
+    if (event.propertyName !== "height") return;
+    list.removeEventListener("transitionend", handleCollapse);
+    if (!list.classList.contains("is-open")) {
+      list.hidden = true;
+      list.style.height = "";
+    }
+  });
+}
+
+function createEmptyState() {
+  const empty = document.createElement("div");
+  empty.className = "empty-state";
+  empty.textContent = uiText.emptyState;
+  return empty;
+}
+
+function createMetaItem(iconType, text) {
+  const item = document.createElement("span");
+  const value = document.createElement("span");
+
+  item.className = "meta-item";
+  item.innerHTML = getMetaIcon(iconType);
+  value.textContent = text;
+  item.append(value);
+
+  return item;
+}
+
+function createMagnetItem(item) {
+  const row = document.createElement("div");
+  const episode = document.createElement("span");
+  const copyButton = document.createElement("button");
+
+  row.className = "magnet-item";
+  episode.className = "episode-tag";
+  episode.textContent = item.episode;
+  copyButton.className = "copy-button";
+  copyButton.type = "button";
+  copyButton.textContent = uiText.copy;
+  copyButton.addEventListener("click", (event) => copyMagnet(item.link, event.currentTarget));
+
+  row.append(episode, copyButton);
+  return row;
+}
+
 function renderAnime() {
   const animeList = getFilteredAnime();
   createImageObserver();
   grid.innerHTML = "";
-  resultText.textContent = `找到 ${animeList.length} 部作品`;
+  resultText.textContent = uiText.resultCount(animeList.length);
 
   if (animeList.length === 0) {
-    grid.innerHTML = '<div class="empty-state">没有匹配的作品，换个筛选条件试试。</div>';
+    grid.append(createEmptyState());
     return;
   }
 
@@ -584,39 +671,28 @@ function renderAnime() {
       coverWrap.classList.remove("is-loading");
       coverWrap.classList.add("is-loaded");
     });
-    cover.alt = `${anime.title} 封面`;
+    cover.alt = uiText.coverAlt(anime.title);
     cover.dataset.src = anime.cover;
     card.querySelector("h2").textContent = anime.title;
     card.querySelector(".genre-pill").textContent = genreName[anime.genre] || anime.genre;
-    card.querySelector(".meta").innerHTML = `
-      <span class="meta-item">
-        ${getMetaIcon("calendar")}
-        <span>${anime.year}</span>
-      </span>
-      <span class="meta-item">
-        ${getMetaIcon("play")}
-        <span>${anime.episodes}</span>
-      </span>
-    `;
+    card.querySelector(".meta").replaceChildren(
+      createMetaItem("calendar", anime.year),
+      createMetaItem("play", anime.episodes)
+    );
     card.querySelector(".rating-badge").textContent = anime.rating.toFixed(1);
     description.textContent = anime.description;
+    descriptionToggle.textContent = uiText.descriptionExpand;
+    magnetToggle.querySelector("span").textContent = uiText.magnetExpand;
 
     // 简介默认收起为两行，按钮负责切换完整文本。
     descriptionToggle.addEventListener("click", () => {
       const isOpen = description.classList.toggle("is-open");
       descriptionBlock.classList.toggle("is-open", isOpen);
-      descriptionToggle.textContent = isOpen ? "收起简介" : "展开简介";
+      descriptionToggle.textContent = isOpen ? uiText.descriptionCollapse : uiText.descriptionExpand;
     });
 
     anime.magnetLinks.forEach((item) => {
-      const row = document.createElement("div");
-      row.className = "magnet-item";
-      row.innerHTML = `
-        <span class="episode-tag">${item.episode}</span>
-        <button class="copy-button" type="button">复制</button>
-      `;
-      row.querySelector(".copy-button").addEventListener("click", (event) => copyMagnet(item.link, event.currentTarget));
-      magnetList.append(row);
+      magnetList.append(createMagnetItem(item));
     });
 
     // 磁力链接默认折叠，用户点击后才展示。
@@ -625,18 +701,12 @@ function renderAnime() {
       const willExpand = !isExpanded;
 
       magnetToggle.setAttribute("aria-expanded", String(willExpand));
-      magnetToggle.querySelector("span").textContent = willExpand ? "收起磁力链接" : "展开磁力链接";
+      magnetToggle.querySelector("span").textContent = willExpand ? uiText.magnetCollapse : uiText.magnetExpand;
 
       if (willExpand) {
-        magnetList.hidden = false;
-        requestAnimationFrame(() => magnetList.classList.add("is-open"));
+        expandMagnetList(magnetList);
       } else {
-        magnetList.classList.remove("is-open");
-        setTimeout(() => {
-          if (magnetToggle.getAttribute("aria-expanded") === "false") {
-            magnetList.hidden = true;
-          }
-        }, 260);
+        collapseMagnetList(magnetList);
       }
     });
 
@@ -649,7 +719,7 @@ async function copyMagnet(link, button) {
   try {
     await navigator.clipboard.writeText(link);
     markCopySuccess(button);
-    showToast("已复制磁力链接");
+    showToast(uiText.copySuccessToast);
   } catch {
     // 兼容直接打开 HTML 文件时剪贴板 API 不可用的情况。
     const tempInput = document.createElement("textarea");
@@ -663,14 +733,14 @@ async function copyMagnet(link, button) {
     const copied = document.execCommand("copy");
     tempInput.remove();
     if (copied) markCopySuccess(button);
-    showToast(copied ? "已复制磁力链接" : "复制失败，请手动复制");
+    showToast(copied ? uiText.copySuccessToast : uiText.copyFailureToast);
   }
 }
 
 function markCopySuccess(button) {
   const originalText = button.textContent;
 
-  button.textContent = "✓";
+  button.textContent = uiText.copySuccessMark;
   button.classList.add("is-copied");
   button.disabled = true;
 
@@ -690,9 +760,9 @@ function showToast(message) {
 
 function resetFilters() {
   searchInput.value = "";
-  setSelectValue(genreFilter, "all");
-  setSelectValue(yearFilter, "all");
-  setSelectValue(sortFilter, "id");
+  setSelectValue(genreFilter, SELECT_ALL_VALUE);
+  setSelectValue(yearFilter, SELECT_ALL_VALUE);
+  setSelectValue(sortFilter, DEFAULT_SORT_VALUE);
   renderAnime();
 }
 
