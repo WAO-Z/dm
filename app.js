@@ -1,3 +1,4 @@
+// 动漫数据集中维护：后续只需要按这个模板继续追加对象即可。
 const animeData = [
   {
     id: 1,
@@ -386,238 +387,243 @@ const animeData = [
     ]
   },
 ];
-
 const genreName = {
   tv: "TV",
-  movie: "电影",
-  ova: "OVA",
-  ona: "ONA",
-  special: "特别篇"
+  movie: "剧场版",
+  ova: "OVA"
 };
 
-const state = {
-  search: "",
-  genre: "all",
-  year: "all",
-  minRating: 0,
-  sort: "rating-desc"
-};
-
-const elements = {
-  grid: document.querySelector("#animeGrid"),
-  template: document.querySelector("#animeCardTemplate"),
-  search: document.querySelector("#searchInput"),
-  genre: document.querySelector("#genreFilter"),
-  year: document.querySelector("#yearFilter"),
-  rating: document.querySelector("#ratingFilter"),
-  sort: document.querySelector("#sortSelect"),
-  reset: document.querySelector("#resetButton"),
-  empty: document.querySelector("#emptyState"),
-  resultTitle: document.querySelector("#resultTitle"),
-  resultCount: document.querySelector("#resultCount"),
-  totalCount: document.querySelector("#totalCount"),
-  linkCount: document.querySelector("#linkCount"),
-  toast: document.querySelector("#toast")
-};
+const grid = document.querySelector("#animeGrid");
+const template = document.querySelector("#animeCardTemplate");
+const searchInput = document.querySelector("#searchInput");
+const genreFilter = document.querySelector('[data-select="genreFilter"]');
+const yearFilter = document.querySelector('[data-select="yearFilter"]');
+const sortFilter = document.querySelector('[data-select="sortFilter"]');
+const customSelects = document.querySelectorAll(".custom-select");
+const resetButton = document.querySelector("#resetButton");
+const resultText = document.querySelector("#resultText");
+const totalCount = document.querySelector("#totalCount");
+const linkCount = document.querySelector("#linkCount");
+const toast = document.querySelector("#toast");
 
 let toastTimer;
 
-function init() {
-  fillFilterOptions();
-  bindEvents();
-  updateStats();
-  render();
-}
-
-function fillFilterOptions() {
-  const genres = [...new Set(animeData.map((anime) => anime.genre))].sort();
+// 初始化统计和年份筛选项，避免年份选项写死。
+function initFilters() {
   const years = [...new Set(animeData.map((anime) => anime.year))].sort((a, b) => b.localeCompare(a));
-
-  genres.forEach((genre) => {
-    const option = document.createElement("option");
-    option.value = genre;
-    option.textContent = genreName[genre] || genre.toUpperCase();
-    elements.genre.append(option);
-  });
+  const yearMenu = yearFilter.querySelector(".select-menu");
 
   years.forEach((year) => {
-    const option = document.createElement("option");
-    option.value = year;
+    const option = document.createElement("button");
+    option.type = "button";
+    option.setAttribute("role", "option");
+    option.dataset.value = year;
     option.textContent = year;
-    elements.year.append(option);
+    yearMenu.append(option);
+  });
+
+  totalCount.textContent = animeData.length;
+  linkCount.textContent = animeData.reduce((sum, anime) => sum + anime.magnetLinks.length, 0);
+  initCustomSelects();
+}
+
+// 根据搜索、类型、年份和排序条件返回最终列表。
+function getFilteredAnime() {
+  const keyword = searchInput.value.trim().toLowerCase();
+
+  return animeData
+    .filter((anime) => {
+      const matchesKeyword = [anime.title, anime.year, anime.description]
+        .join(" ")
+        .toLowerCase()
+        .includes(keyword);
+      const genreValue = getSelectValue(genreFilter);
+      const yearValue = getSelectValue(yearFilter);
+      const matchesGenre = genreValue === "all" || anime.genre === genreValue;
+      const matchesYear = yearValue === "all" || anime.year === yearValue;
+
+      return matchesKeyword && matchesGenre && matchesYear;
+    })
+    .sort((a, b) => {
+      const sortValue = getSelectValue(sortFilter);
+      if (sortValue === "year") return Number(b.year) - Number(a.year);
+      if (sortValue === "title") return a.title.localeCompare(b.title, "zh-CN");
+      return b.rating - a.rating;
+    });
+}
+
+function getSelectValue(select) {
+  return select.dataset.value;
+}
+
+function setSelectValue(select, value) {
+  const triggerText = select.querySelector(".select-trigger span:first-child");
+  const options = select.querySelectorAll('[role="option"]');
+
+  options.forEach((option) => {
+    const isSelected = option.dataset.value === value;
+    option.setAttribute("aria-selected", String(isSelected));
+    if (isSelected) triggerText.textContent = option.textContent;
+  });
+
+  select.dataset.value = value;
+}
+
+// 自定义 select 用于实现原生 select 无法稳定支持的展开动画。
+function initCustomSelects() {
+  customSelects.forEach((select) => {
+    const trigger = select.querySelector(".select-trigger");
+
+    trigger.addEventListener("click", () => {
+      const willOpen = !select.classList.contains("is-open");
+      closeAllSelects();
+      select.classList.toggle("is-open", willOpen);
+      trigger.setAttribute("aria-expanded", String(willOpen));
+    });
+
+    select.querySelectorAll('[role="option"]').forEach((option) => {
+      option.addEventListener("click", () => {
+        setSelectValue(select, option.dataset.value);
+        closeAllSelects();
+        renderAnime();
+      });
+    });
+  });
+
+  document.addEventListener("click", (event) => {
+    if (!event.target.closest(".custom-select")) closeAllSelects();
   });
 }
 
-function bindEvents() {
-  elements.search.addEventListener("input", (event) => {
-    state.search = event.target.value.trim().toLowerCase();
-    render();
+function closeAllSelects() {
+  customSelects.forEach((select) => {
+    select.classList.remove("is-open");
+    select.querySelector(".select-trigger").setAttribute("aria-expanded", "false");
   });
-
-  elements.genre.addEventListener("change", (event) => {
-    state.genre = event.target.value;
-    render();
-  });
-
-  elements.year.addEventListener("change", (event) => {
-    state.year = event.target.value;
-    render();
-  });
-
-  elements.rating.addEventListener("change", (event) => {
-    state.minRating = Number(event.target.value);
-    render();
-  });
-
-  elements.sort.addEventListener("change", (event) => {
-    state.sort = event.target.value;
-    render();
-  });
-
-  elements.reset.addEventListener("click", resetFilters);
 }
 
-function updateStats() {
-  const links = animeData.reduce((total, anime) => total + anime.magnetLinks.length, 0);
-  elements.totalCount.textContent = `${animeData.length} 部作品`;
-  elements.linkCount.textContent = `${links} 条链接`;
-}
+function renderAnime() {
+  const animeList = getFilteredAnime();
+  grid.innerHTML = "";
+  resultText.textContent = `找到 ${animeList.length} 部作品`;
 
-function render() {
-  const filtered = animeData
-    .filter(matchesSearch)
-    .filter((anime) => state.genre === "all" || anime.genre === state.genre)
-    .filter((anime) => state.year === "all" || anime.year === state.year)
-    .filter((anime) => anime.rating >= state.minRating)
-    .sort(sortAnime);
-
-  elements.grid.replaceChildren();
-  filtered.forEach((anime, index) => elements.grid.append(createCard(anime, index)));
-
-  elements.empty.hidden = filtered.length > 0;
-  elements.resultCount.textContent = `${filtered.length} 个结果`;
-  elements.resultTitle.textContent = state.search ? `搜索 “${state.search}”` : "全部资源";
-}
-
-function matchesSearch(anime) {
-  if (!state.search) {
-    return true;
-  }
-
-  return [anime.title, anime.year, anime.episodes, anime.genre, anime.description]
-    .join(" ")
-    .toLowerCase()
-    .includes(state.search);
-}
-
-function sortAnime(a, b) {
-  if (state.sort === "year-desc") {
-    return Number(b.year) - Number(a.year);
-  }
-
-  if (state.sort === "title-asc") {
-    return a.title.localeCompare(b.title, "zh-Hans-CN");
-  }
-
-  if (state.sort === "links-desc") {
-    return b.magnetLinks.length - a.magnetLinks.length;
-  }
-
-  return b.rating - a.rating;
-}
-
-function createCard(anime, index) {
-  const card = elements.template.content.firstElementChild.cloneNode(true);
-  const cover = card.querySelector(".cover");
-  const title = card.querySelector("h3");
-  const genre = card.querySelector(".genre-pill");
-  const rating = card.querySelector(".rating-badge");
-  const meta = card.querySelector(".meta");
-  const description = card.querySelector(".description");
-  const magnetList = card.querySelector(".magnet-list");
-
-  card.style.animationDelay = `${Math.min(index * 0.06, 0.36)}s`;
-  cover.src = anime.cover;
-  cover.alt = `${anime.title} 封面`;
-  title.textContent = anime.title;
-  genre.textContent = genreName[anime.genre] || anime.genre;
-  rating.textContent = anime.rating.toFixed(1);
-  meta.innerHTML = `<span>${anime.year}</span><span>${anime.episodes}</span><span>${anime.magnetLinks.length} 条磁力</span>`;
-  description.textContent = anime.description;
-
-  anime.magnetLinks.forEach((magnet) => {
-    const item = document.createElement("div");
-    item.className = "magnet-item";
-
-    const label = document.createElement("strong");
-    label.title = magnet.link;
-    label.textContent = magnet.episode;
-
-    const button = document.createElement("button");
-    button.className = "copy-button";
-    button.type = "button";
-    button.textContent = "复制";
-    button.addEventListener("click", () => copyMagnet(magnet.link, button, anime.title, magnet.episode));
-
-    item.append(label, button);
-    magnetList.append(item);
-  });
-
-  return card;
-}
-
-async function copyMagnet(link, button, title, episode) {
-  try {
-    await writeClipboard(link);
-    button.textContent = "已复制";
-    button.classList.add("copied");
-    showToast(`已复制：${title} · ${episode}`);
-    window.setTimeout(() => {
-      button.textContent = "复制";
-      button.classList.remove("copied");
-    }, 1300);
-  } catch (error) {
-    showToast("复制失败，请检查浏览器权限");
-  }
-}
-
-async function writeClipboard(text) {
-  if (navigator.clipboard && window.isSecureContext) {
-    await navigator.clipboard.writeText(text);
+  if (animeList.length === 0) {
+    grid.innerHTML = '<div class="empty-state">没有匹配的作品，换个筛选条件试试。</div>';
     return;
   }
 
-  const textarea = document.createElement("textarea");
-  textarea.value = text;
-  textarea.setAttribute("readonly", "");
-  textarea.style.position = "fixed";
-  textarea.style.opacity = "0";
-  document.body.append(textarea);
-  textarea.select();
-  document.execCommand("copy");
-  textarea.remove();
+  animeList.forEach((anime) => {
+    const card = template.content.firstElementChild.cloneNode(true);
+    const cover = card.querySelector(".cover");
+    const description = card.querySelector(".description");
+    const descriptionToggle = card.querySelector(".description-toggle");
+    const magnetToggle = card.querySelector(".magnet-toggle");
+    const magnetList = card.querySelector(".magnet-list");
+
+    cover.src = anime.cover;
+    cover.alt = `${anime.title} 封面`;
+    card.querySelector("h2").textContent = anime.title;
+    card.querySelector(".genre-pill").textContent = genreName[anime.genre] || anime.genre;
+    card.querySelector(".meta").textContent = `${anime.year} · ${anime.episodes}`;
+    card.querySelector(".rating-badge").textContent = anime.rating.toFixed(1);
+    description.textContent = anime.description;
+
+    // 简介默认收起为两行，按钮负责切换完整文本。
+    descriptionToggle.addEventListener("click", () => {
+      const isOpen = description.classList.toggle("is-open");
+      descriptionToggle.textContent = isOpen ? "收起简介" : "展开简介";
+    });
+
+    anime.magnetLinks.forEach((item) => {
+      const row = document.createElement("div");
+      row.className = "magnet-item";
+      row.innerHTML = `
+        <span class="episode-tag">${item.episode}</span>
+        <button class="copy-button" type="button">复制</button>
+      `;
+      row.querySelector(".copy-button").addEventListener("click", (event) => copyMagnet(item.link, event.currentTarget));
+      magnetList.append(row);
+    });
+
+    // 磁力链接默认折叠，用户点击后才展示。
+    magnetToggle.addEventListener("click", () => {
+      const isExpanded = magnetToggle.getAttribute("aria-expanded") === "true";
+      const willExpand = !isExpanded;
+
+      magnetToggle.setAttribute("aria-expanded", String(willExpand));
+      magnetToggle.querySelector("span").textContent = willExpand ? "收起磁力链接" : "展开磁力链接";
+
+      if (willExpand) {
+        magnetList.hidden = false;
+        requestAnimationFrame(() => magnetList.classList.add("is-open"));
+      } else {
+        magnetList.classList.remove("is-open");
+        setTimeout(() => {
+          if (magnetToggle.getAttribute("aria-expanded") === "false") {
+            magnetList.hidden = true;
+          }
+        }, 260);
+      }
+    });
+
+    grid.append(card);
+  });
+}
+
+async function copyMagnet(link, button) {
+  try {
+    await navigator.clipboard.writeText(link);
+    markCopySuccess(button);
+    showToast("已复制磁力链接");
+  } catch {
+    // 兼容直接打开 HTML 文件时剪贴板 API 不可用的情况。
+    const tempInput = document.createElement("textarea");
+    tempInput.value = link;
+    tempInput.setAttribute("readonly", "");
+    tempInput.style.position = "fixed";
+    tempInput.style.opacity = "0";
+    document.body.append(tempInput);
+    tempInput.select();
+
+    const copied = document.execCommand("copy");
+    tempInput.remove();
+    if (copied) markCopySuccess(button);
+    showToast(copied ? "已复制磁力链接" : "复制失败，请手动复制");
+  }
+}
+
+function markCopySuccess(button) {
+  const originalText = button.textContent;
+
+  button.textContent = "✓";
+  button.classList.add("is-copied");
+  button.disabled = true;
+
+  setTimeout(() => {
+    button.textContent = originalText;
+    button.classList.remove("is-copied");
+    button.disabled = false;
+  }, 1200);
 }
 
 function showToast(message) {
-  window.clearTimeout(toastTimer);
-  elements.toast.textContent = message;
-  elements.toast.classList.add("show");
-  toastTimer = window.setTimeout(() => elements.toast.classList.remove("show"), 2200);
+  toast.textContent = message;
+  toast.classList.add("is-visible");
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 1600);
 }
 
 function resetFilters() {
-  state.search = "";
-  state.genre = "all";
-  state.year = "all";
-  state.minRating = 0;
-  state.sort = "rating-desc";
-
-  elements.search.value = "";
-  elements.genre.value = "all";
-  elements.year.value = "all";
-  elements.rating.value = "0";
-  elements.sort.value = "rating-desc";
-  render();
+  searchInput.value = "";
+  setSelectValue(genreFilter, "all");
+  setSelectValue(yearFilter, "all");
+  setSelectValue(sortFilter, "rating");
+  renderAnime();
 }
 
-init();
+searchInput.addEventListener("input", renderAnime);
+
+resetButton.addEventListener("click", resetFilters);
+
+initFilters();
+renderAnime();
