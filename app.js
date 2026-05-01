@@ -552,6 +552,40 @@ function loadCover(cover) {
   cover.src = cover.dataset.src;
 }
 
+function expandMagnetList(list) {
+  list.hidden = false;
+  list.style.height = "0px";
+
+  requestAnimationFrame(() => {
+    list.classList.add("is-open");
+    list.style.height = `${list.scrollHeight}px`;
+  });
+
+  list.addEventListener("transitionend", function handleExpand(event) {
+    if (event.propertyName !== "height") return;
+    list.removeEventListener("transitionend", handleExpand);
+    if (list.classList.contains("is-open")) list.style.height = "auto";
+  });
+}
+
+function collapseMagnetList(list) {
+  list.style.height = `${list.scrollHeight}px`;
+
+  requestAnimationFrame(() => {
+    list.classList.remove("is-open");
+    list.style.height = "0px";
+  });
+
+  list.addEventListener("transitionend", function handleCollapse(event) {
+    if (event.propertyName !== "height") return;
+    list.removeEventListener("transitionend", handleCollapse);
+    if (!list.classList.contains("is-open")) {
+      list.hidden = true;
+      list.style.height = "";
+    }
+  });
+}
+
 function renderAnime() {
   const animeList = getFilteredAnime();
   createImageObserver();
@@ -628,15 +662,9 @@ function renderAnime() {
       magnetToggle.querySelector("span").textContent = willExpand ? "收起磁力链接" : "展开磁力链接";
 
       if (willExpand) {
-        magnetList.hidden = false;
-        requestAnimationFrame(() => magnetList.classList.add("is-open"));
+        expandMagnetList(magnetList);
       } else {
-        magnetList.classList.remove("is-open");
-        setTimeout(() => {
-          if (magnetToggle.getAttribute("aria-expanded") === "false") {
-            magnetList.hidden = true;
-          }
-        }, 260);
+        collapseMagnetList(magnetList);
       }
     });
 
