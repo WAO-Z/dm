@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Anime Magnet Hub</title>
+  <link rel="preconnect" href="https://lain.bgm.tv">
+  <link rel="stylesheet" href="./styles.css">
+</head>
+<body>
+  <div class="site-shell">
+    <header class="hero">
+      <nav class="topbar" aria-label="主导航">
+        <a class="brand" href="#" aria-label="Anime Magnet Hub 首页">
+          <span class="brand-mark">AM</span>
+          <span>Anime Magnet Hub</span>
+        </a>
+        <div class="stats" aria-label="资源统计">
+          <span id="totalCount">0 部作品</span>
+          <span id="linkCount">0 条链接</span>
+        </div>
+      </nav>
+
+      <section class="hero-content">
+        <p class="eyebrow">Anime torrent index</p>
+        <h1>动漫磁力链接分享站</h1>
+        <p class="hero-copy">按作品、年份、类型与评分快速筛选资源，点击按钮即可复制对应磁力链接。</p>
+      </section>
+    </header>
+
+    <main>
+      <section class="filters" aria-label="筛选工具">
+        <label class="search-box">
+          <span>搜索</span>
+          <input id="searchInput" type="search" placeholder="输入番名、简介或年份" autocomplete="off">
+        </label>
+
+        <label>
+          <span>类型</span>
+          <select id="genreFilter">
+            <option value="all">全部类型</option>
+          </select>
+        </label>
+
+        <label>
+          <span>年份</span>
+          <select id="yearFilter">
+            <option value="all">全部年份</option>
+          </select>
+        </label>
+
+        <label>
+          <span>最低评分</span>
+          <select id="ratingFilter">
+            <option value="0">不限评分</option>
+            <option value="9">9.0+</option>
+            <option value="8.5">8.5+</option>
+            <option value="8">8.0+</option>
+            <option value="7">7.0+</option>
+          </select>
+        </label>
+
+        <label>
+          <span>排序</span>
+          <select id="sortSelect">
+            <option value="rating-desc">评分最高</option>
+            <option value="year-desc">年份最新</option>
+            <option value="title-asc">标题 A-Z</option>
+            <option value="links-desc">链接最多</option>
+          </select>
+        </label>
+
+        <button class="reset-button" id="resetButton" type="button">重置</button>
+      </section>
+
+      <section class="result-head" aria-live="polite">
+        <h2 id="resultTitle">全部资源</h2>
+        <span id="resultCount">0 个结果</span>
+      </section>
+
+      <section class="anime-grid" id="animeGrid" aria-label="动漫资源列表"></section>
+      <section class="empty-state" id="emptyState" hidden>
+        <h2>没有找到匹配资源</h2>
+        <p>换个关键词或降低评分条件试试。</p>
+      </section>
+    </main>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <template id="animeCardTemplate">
+    <article class="anime-card">
+      <div class="cover-wrap">
+        <img class="cover" src="" alt="" loading="lazy">
+        <div class="rating-badge"></div>
+      </div>
+      <div class="card-body">
+        <div class="title-row">
+          <h3></h3>
+          <span class="genre-pill"></span>
+        </div>
+        <div class="meta"></div>
+        <p class="description"></p>
+        <div class="magnet-list"></div>
+      </div>
+    </article>
+  </template>
+
+  <script src="./app.js"></script>
+</body>
+</html>
