@@ -4,7 +4,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Anime Magnet Shelf</title>
+  <title>动漫磁力链接分享平台</title>
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <link rel="preconnect" href="https://lain.bgm.tv">
   <link rel="stylesheet" href="./styles.css">
 </head>
@@ -14,8 +15,11 @@
     <section class="hero-panel" aria-labelledby="page-title">
       <div class="hero-copy">
         <p class="eyebrow">Anime Magnet Shelf</p>
-        <h1 id="page-title">动漫磁力链接分享站</h1>
-        <p class="hero-text">筛选、展开、复制，一页完成收藏整理。</p>
+        <h1 id="page-title">动漫磁力链接分享</h1>
+        <p class="hero-text">评分基于<a href="https://myanimelist.net/topanime.php" target="_blank"
+            rel="noopener noreferrer">
+            MyAnimeList
+          </a>动漫评分网站</p>
       </div>
       <div class="hero-stats" aria-label="站点统计">
         <span><strong id="totalCount">0</strong>部作品</span>
@@ -81,9 +85,15 @@
     </section>
 
     <section class="anime-grid" id="animeGrid" aria-label="动漫列表"></section>
+
+    <footer class="site-footer">
+      <p>本页面仅用于动漫资源分享，请支持正版动漫。所有资源来源于网络，版权归原作者所有。</p>
+      <p>© 2026 动漫磁力链接分享平台 | 设计：Codex</p>
+    </footer>
   </main>
 
   <div class="toast" id="toast" role="status" aria-live="polite">已复制磁力链接</div>
+  <button class="back-to-top" id="backToTop" type="button" aria-label="回到顶部">↑</button>
 
   <template id="animeCardTemplate">
     <article class="anime-card">
@@ -114,7 +124,7 @@
     </article>
   </template>
 
-  <script src="./app.js?v2.0"></script>
+  <script src="./app.js"></script>
 </body>
 
 </html>

@@ -7,7 +7,7 @@ const animeData = [
     year: "2009",
     episodes: "64集",
     genre: "tv",
-    rating: 9.1,
+    rating: 9.11,
     description: "因思念已故母亲，触犯炼金术中被视为最大禁忌“人体炼成”，而失去一切的兄弟──装上机械铠、有“钢之炼金术师”之称号的哥哥爱德华·爱力克，以及灵魂被固定于铠甲的弟弟阿尔冯斯──两人为取回失去的东西，踏上寻找贤者之石的旅程，并随着接近贤者之石的真相、在巨大的阴谋中勇往直前。暗地活跃的非人类、徐徐露出本质的军事国家亚美斯多利斯、受虐民众的无比憎恨与复仇怨念、炼金术带来的种种悲剧……散于各点的悲剧，终将连成线，人民、甚至国家都会被卷入其中。",
     magnetLinks: [
       { episode: "BDRip-64集+OVA", link: "magnet:?xt=urn:btih:b8d7f1d20343f1332e6d166d862509b9655292df&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" },
@@ -64,7 +64,7 @@ const animeData = [
     year: "2025",
     episodes: "1集",
     genre: "movie",
-    rating: 9.12,
+    rating: 9.08,
     description: "全球人气漫画《电锯人》终于要被改编成电影啦！其中备受好评的“Reze”篇章即将登上大银幕。原作漫画《电锯人》销量已突破3000万册，目前正在集英社《周刊少年Jump》上连载。该作由才华横溢的漫画家藤本树创作，他也是2024年动画电影《回头看》（Look Back）的作者，该片荣获第48届日本电影学院奖最佳动画电影奖。2022年，动画公司MAPPA（代表作：《咒术回战》、《进击的巨人 最终季》等）制作了动画版，不仅在日本，更在全球范围内获得了极高的评价。迄今为止，该动画已在超过200个国家和地区播出。如今，自连载以来就广受好评的“Reze”篇章即将被改编成电影。主人公电次偶然邂逅少女蕾泽，却被她掌控，最终走向不可预知的命运。故事以节奏紧凑、场面宏大的战斗场面呈现。继风靡全球的TV动画片头曲《KICK BACK》之后，米津玄师将再次献唱主题曲《IRIS OUT》。这首专为本作创作的歌曲，为蕾泽篇的世界注入了全新的活力。爱、欲望、人类与恶魔……",
     magnetLinks: [
       { episode: "HEVC-10bit AAC[简繁外挂字幕]", link: "magnet:?xt=urn:btih:d51b571afd1d5fc8ebf776e0f48e39eb377fbc0b&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" },
@@ -123,7 +123,7 @@ const animeData = [
     year: "2023",
     episodes: "28集",
     genre: "tv",
-    rating: 9.29,
+    rating: 9.27,
     description: "魔法使芙莉莲和勇者辛美尔等人一起，历经十年的冒险之后击败了魔王，为世界带来了和平。身为能活上一千多年的精灵族，她于是和辛美尔等人约定再次相见后，踏上了独自一人的旅途。自那以后，50年过去，芙莉莲又前往拜访辛美尔，相比于和50年前一点没变的她来说，辛美尔已经年迈体衰，进入了风烛残年。之后，她目睹了辛美尔迎来他的死亡，痛感自己以往没能'知晓人心'，陷入后悔的芙莉莲，为了'知晓人心'，踏上了旅途。这趟旅途会邂逅各种各样的人，也有各种各样的事情在等待着她。",
     magnetLinks: [
       { episode: "1-28集HEVC-10bit", link: "magnet:?xt=urn:btih:814afcf5d40bd71bb9bdb863a1db94ac41684d2c&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" },
@@ -152,7 +152,7 @@ const animeData = [
     year: "2019",
     episodes: "24集",
     genre: "tv",
-    rating: 8.77,
+    rating: 8.82,
     description: "公元10世纪末期，以战争掠夺为生的最强民族·维京人席卷世界。被讴歌为最强战士的儿子·托尔芬，自小便生活在战场上，并向往着梦幻大陆“文兰（VINLAND）”——这是一个发生在激荡时代的，真正的战士物语。",
     magnetLinks: [
       { episode: "第一季1-24", link: "magnet:?xt=urn:btih:a14d4f03d5ab9f440a18a171220f9d5b3187a088&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" },
@@ -238,7 +238,7 @@ const animeData = [
     rating: 8.48,
     description: "因为兴趣而开始当英雄的男人「埼玉」，在经过三年特训之後，得到了无敌的力量。\n　　然而，他实在是强过了头，所以无论多厉害的对手，都被他一拳解决。「绝对强势的力量，实在是很无聊。」在这种普通热血的最强英雄面前，今天也出现新的敌踪。今天可以让他拿出认真的态度吗！？",
     magnetLinks: [
-      { episode: "[01-12 END+OAD][720P]", link: "magnet:?xt=urn:btih:e4e0e23729967f589c57c5fe76def1b09be9517e&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" },
+      { episode: "[01-12 繁体][1080P]", link: "magnet:?xt=urn:btih:e7ab5921eb01abefe97a4a4357ffdb67a076936a&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" },
 
     ]
   },
@@ -279,7 +279,7 @@ const animeData = [
     year: "2016",
     episodes: "1集",
     genre: "movie",
-    rating: 8.83,
+    rating: 8.82,
     description: "新海诚导演的动画电影《你的名字。》的漫画版已开始连载。这是一个关于梦中相遇的男孩和女孩的爱情与奇迹的故事。住在偏远山区小镇的高中女生宫水三叶梦见了住在东京的高中男生橘泷。两个本不该相遇的人，他们的奇妙邂逅就此展开。",
     magnetLinks: [
       { episode: "4K[BDRip]", link: "magnet:?xt=urn:btih:a38fc52db9be0bfb7de51393ca6a62357296a89c&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" },
@@ -293,7 +293,7 @@ const animeData = [
     year: "2025",
     episodes: "1集",
     genre: "movie",
-    rating: 8.69,
+    rating: 8.67,
     description: "灶门炭治郎为了将变成鬼的妹妹祢豆子变回人类，加入了鬼杀队。加入后，他与同伴我妻善逸和嘴平伊之助并肩作战，对抗各种恶鬼，并在与同伴的友谊和羁绊中不断成长。他还与鬼杀队最高级别的剑士——柱们并肩作战，包括在“无限列车篇”中与炎柱炼狱杏寿郎交手，在“红灯区篇”中与音柱宇髄天元交手，以及在“刀匠村篇”中与雾柱时透无一郎和恋柱甘露寺蜜璃交手。后来，当炭治郎和他的队员们正在参加柱们联合训练“柱训练”，为即将到来的与恶鬼的战斗做准备时，鬼舞辻无惨突然出现在鬼杀队总部产屋敷宅邸。炭治郎和柱们赶去支援师父，却被无惨扔进了神秘的异空间。炭治郎一行人落入的地方正是无惨的据点——无限城，鬼杀队与恶鬼的最终决战就此拉开帷幕。",
     magnetLinks: [
       { episode: "简中流媒体版-西班牙泄露版", link: "magnet:?xt=urn:btih:a778f617d05d4adda402508bdb7755830eeae191&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" },
@@ -382,7 +382,7 @@ const animeData = [
     rating: 8.51,
     description: "在梦想与希望汇聚的虚拟空间<月读>，少女们相遇，以及离别的舞台，就此拉开帷幕——在近未来的时代，酒寄彩叶是就读于东京重点高中的17岁女高中生，她同时兼顾打工与学业，每天忙得不可开交。月见八千代是互联网虚拟空间<月读>的管理员兼超人气主播，彩叶平日透过观看八千代的直播放松身心。在这个任何人都能创造自己的分身，自由进行创作活动的<月读>里，彩叶一边支持着自己的偶像八千代，一边靠对战游戏零零散散赚点零用钱。某天放学回家的路上，彩叶发现了一根发出七彩光芒的RGB电线杆，在那里面竟然有一个可爱的婴儿。她放心不下把婴儿带回家，没想到对方转眼间迅速长大，长成了与彩叶年纪相仿的少女。「你……该不会是辉夜姬吧？」长大后的辉夜姬十分任性。在辉夜的请求（任性）下，彩叶开始帮她在月读开展主播活动。彩叶作为制作人创作音乐，辉夜作为主播负责演唱，两人也在合作中一点点拉近了距离。然而她们并不知道，一道不祥的阴影已经逼近了她们眼前，要将辉夜带回月亮——这是一个，还从未有人见过的「辉夜姬」的故事。",
     magnetLinks: [
-      { episode: "[WebRip 1080P HEVC 10Bit]", link: "magnet:?xt=urn:btih:8951cbbbe74c8e238710e5a57353cef3514645e9&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" }
+      { episode: "[WebRip 1080P HEVC 10Bit]", link: "magnet:?xt=urn:btih:33d98716199d993edeb36207ab0689431acb01f6&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" }
 
     ]
   },
@@ -405,6 +405,7 @@ const resultText = document.querySelector("#resultText");
 const totalCount = document.querySelector("#totalCount");
 const linkCount = document.querySelector("#linkCount");
 const toast = document.querySelector("#toast");
+const backToTop = document.querySelector("#backToTop");
 
 let toastTimer;
 let imageObserver;
@@ -456,6 +457,15 @@ function getFilteredAnime() {
 
 function getSelectValue(select) {
   return select.dataset.value;
+}
+
+function getMetaIcon(type) {
+  const icons = {
+    calendar: '<svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="3"/></svg>',
+    play: '<svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg>'
+  };
+
+  return icons[type];
 }
 
 function setSelectValue(select, value) {
@@ -558,6 +568,7 @@ function renderAnime() {
     const cover = card.querySelector(".cover");
     const coverWrap = card.querySelector(".cover-wrap");
     const description = card.querySelector(".description");
+    const descriptionBlock = card.querySelector(".description-block");
     const descriptionToggle = card.querySelector(".description-toggle");
     const magnetToggle = card.querySelector(".magnet-toggle");
     const magnetList = card.querySelector(".magnet-list");
@@ -577,13 +588,23 @@ function renderAnime() {
     cover.dataset.src = anime.cover;
     card.querySelector("h2").textContent = anime.title;
     card.querySelector(".genre-pill").textContent = genreName[anime.genre] || anime.genre;
-    card.querySelector(".meta").textContent = `${anime.year} · ${anime.episodes}`;
+    card.querySelector(".meta").innerHTML = `
+      <span class="meta-item">
+        ${getMetaIcon("calendar")}
+        <span>${anime.year}</span>
+      </span>
+      <span class="meta-item">
+        ${getMetaIcon("play")}
+        <span>${anime.episodes}</span>
+      </span>
+    `;
     card.querySelector(".rating-badge").textContent = anime.rating.toFixed(1);
     description.textContent = anime.description;
 
     // 简介默认收起为两行，按钮负责切换完整文本。
     descriptionToggle.addEventListener("click", () => {
       const isOpen = description.classList.toggle("is-open");
+      descriptionBlock.classList.toggle("is-open", isOpen);
       descriptionToggle.textContent = isOpen ? "收起简介" : "展开简介";
     });
 
@@ -678,6 +699,36 @@ function resetFilters() {
 searchInput.addEventListener("input", renderAnime);
 
 resetButton.addEventListener("click", resetFilters);
+
+window.addEventListener("scroll", () => {
+  backToTop.classList.toggle("is-visible", window.scrollY > 520);
+});
+
+backToTop.addEventListener("click", () => {
+  scrollToTopWithAnimation();
+});
+
+function scrollToTopWithAnimation() {
+  const startY = window.scrollY;
+  const duration = 820;
+  const startTime = performance.now();
+
+  function easeOutCubic(progress) {
+    return 1 - Math.pow(1 - progress, 3);
+  }
+
+  function step(currentTime) {
+    const elapsed = currentTime - startTime;
+    const progress = Math.min(elapsed / duration, 1);
+    const nextY = startY * (1 - easeOutCubic(progress));
+
+    window.scrollTo(0, nextY);
+
+    if (progress < 1) requestAnimationFrame(step);
+  }
+
+  requestAnimationFrame(step);
+}
 
 initFilters();
 renderAnime();
