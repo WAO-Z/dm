@@ -218,7 +218,7 @@ const animeData = [
     id: 16,
     title: "Fate/stay night [Heaven's Feel]",
     cover: "https://lain.bgm.tv/pic/cover/l/2c/bf/175600_4wcTq.jpg",
-    year: "2017-2020",
+    year: "2017",
     episodes: "3集",
     genre: "movie",
     rating: 8.64,
@@ -407,6 +407,7 @@ const linkCount = document.querySelector("#linkCount");
 const toast = document.querySelector("#toast");
 
 let toastTimer;
+let imageObserver;
 
 // 初始化统计和年份筛选项，避免年份选项写死。
 function initFilters() {
@@ -446,6 +447,7 @@ function getFilteredAnime() {
     })
     .sort((a, b) => {
       const sortValue = getSelectValue(sortFilter);
+      if (sortValue === "id") return a.id - b.id;
       if (sortValue === "year") return Number(b.year) - Number(a.year);
       if (sortValue === "title") return a.title.localeCompare(b.title, "zh-CN");
       return b.rating - a.rating;
@@ -502,8 +504,47 @@ function closeAllSelects() {
   });
 }
 
+function createImageObserver() {
+  if (imageObserver) imageObserver.disconnect();
+
+  if (!("IntersectionObserver" in window)) {
+    imageObserver = null;
+    return;
+  }
+
+  imageObserver = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+
+      loadCover(entry.target);
+      imageObserver.unobserve(entry.target);
+    });
+  }, {
+    rootMargin: "240px 0px",
+    threshold: 0.01
+  });
+}
+
+function observeCover(cover) {
+  if (imageObserver) {
+    imageObserver.observe(cover);
+    return;
+  }
+
+  loadCover(cover);
+}
+
+function loadCover(cover) {
+  const coverWrap = cover.closest(".cover-wrap");
+
+  if (!cover.dataset.src || cover.src) return;
+  coverWrap.classList.add("is-loading");
+  cover.src = cover.dataset.src;
+}
+
 function renderAnime() {
   const animeList = getFilteredAnime();
+  createImageObserver();
   grid.innerHTML = "";
   resultText.textContent = `找到 ${animeList.length} 部作品`;
 
@@ -512,16 +553,28 @@ function renderAnime() {
     return;
   }
 
-  animeList.forEach((anime) => {
+  animeList.forEach((anime, index) => {
     const card = template.content.firstElementChild.cloneNode(true);
     const cover = card.querySelector(".cover");
+    const coverWrap = card.querySelector(".cover-wrap");
     const description = card.querySelector(".description");
     const descriptionToggle = card.querySelector(".description-toggle");
     const magnetToggle = card.querySelector(".magnet-toggle");
     const magnetList = card.querySelector(".magnet-list");
 
-    cover.src = anime.cover;
+    card.style.animationDelay = `${Math.min(index * 70, 420)}ms`;
+    cover.loading = "lazy";
+    cover.decoding = "async";
+    cover.addEventListener("load", () => {
+      coverWrap.classList.remove("is-loading");
+      coverWrap.classList.add("is-loaded");
+    });
+    cover.addEventListener("error", () => {
+      coverWrap.classList.remove("is-loading");
+      coverWrap.classList.add("is-loaded");
+    });
     cover.alt = `${anime.title} 封面`;
+    cover.dataset.src = anime.cover;
     card.querySelector("h2").textContent = anime.title;
     card.querySelector(".genre-pill").textContent = genreName[anime.genre] || anime.genre;
     card.querySelector(".meta").textContent = `${anime.year} · ${anime.episodes}`;
@@ -567,6 +620,7 @@ function renderAnime() {
     });
 
     grid.append(card);
+    observeCover(cover);
   });
 }
 
@@ -617,7 +671,7 @@ function resetFilters() {
   searchInput.value = "";
   setSelectValue(genreFilter, "all");
   setSelectValue(yearFilter, "all");
-  setSelectValue(sortFilter, "rating");
+  setSelectValue(sortFilter, "id");
   renderAnime();
 }
 

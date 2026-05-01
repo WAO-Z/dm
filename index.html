@@ -60,13 +60,14 @@
 
       <label class="select-field">
         <span>排序</span>
-        <div class="custom-select" data-select="sortFilter" data-value="rating">
+        <div class="custom-select" data-select="sortFilter" data-value="id">
           <button class="select-trigger" type="button" aria-haspopup="listbox" aria-expanded="false">
-            <span>评分最高</span>
+            <span>默认排序</span>
             <span class="select-arrow">⌄</span>
           </button>
           <div class="select-menu" role="listbox">
-            <button type="button" role="option" data-value="rating" aria-selected="true">评分最高</button>
+            <button type="button" role="option" data-value="id" aria-selected="true">默认排序</button>
+            <button type="button" role="option" data-value="rating">评分最高</button>
             <button type="button" role="option" data-value="year">年份最新</button>
             <button type="button" role="option" data-value="title">标题 A-Z</button>
           </div>
@@ -113,7 +114,7 @@
     </article>
   </template>
 
-  <script src="./app.js?v=1.0.0"></script>
+  <script src="./app.js?v2.0"></script>
 </body>
 
 </html>

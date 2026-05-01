@@ -291,6 +291,9 @@ input:focus,
   border-radius: 8px;
   background: var(--panel);
   box-shadow: 0 16px 42px rgba(0, 0, 0, 0.22);
+  opacity: 0;
+  transform: translateY(18px);
+  animation: cardEnter 520ms ease forwards;
   transition: transform 220ms ease, border-color 220ms ease, box-shadow 220ms ease;
 }
 
@@ -307,12 +310,42 @@ input:focus,
   background: #202833;
 }
 
+.cover-wrap::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(110deg, #1d2631 8%, #2d3947 18%, #1d2631 33%);
+  background-size: 200% 100%;
+  opacity: 0;
+}
+
+.cover-wrap.is-loading::before {
+  opacity: 1;
+  animation: imageSkeleton 1.15s linear infinite;
+}
+
+.cover-wrap.is-loaded::before {
+  opacity: 0;
+  animation: none;
+  transition: opacity 260ms ease;
+}
+
 .cover {
   width: 100%;
   height: 100%;
   display: block;
   object-fit: cover;
-  transition: transform 420ms ease;
+  opacity: 0;
+  filter: blur(10px);
+  transform: scale(1.02);
+  transition: opacity 360ms ease, filter 360ms ease, transform 420ms ease;
+}
+
+.cover-wrap.is-loaded .cover {
+  opacity: 1;
+  filter: blur(0);
+  transform: scale(1);
 }
 
 .anime-card:hover .cover {
@@ -329,6 +362,19 @@ input:focus,
   font-weight: 800;
   background: var(--accent-2);
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.28);
+}
+
+@keyframes cardEnter {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes imageSkeleton {
+  to {
+    background-position-x: -200%;
+  }
 }
 
 .card-content {
@@ -368,15 +414,14 @@ h2 {
 }
 
 .description {
-  display: -webkit-box;
   overflow: hidden;
   line-height: 1.7;
-  -webkit-box-orient: vertical;
-  -webkit-line-clamp: 2;
+  max-height: 3.4em;
+  transition: max-height 180ms ease;
 }
 
 .description.is-open {
-  display: block;
+  max-height: 220px;
 }
 
 .description-block {
