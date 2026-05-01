@@ -603,7 +603,6 @@ function collapseMagnetList(list) {
   });
 }
 
-<<<<<<< HEAD
 function createEmptyState() {
   const empty = document.createElement("div");
   empty.className = "empty-state";
@@ -640,8 +639,6 @@ function createMagnetItem(item) {
   return row;
 }
 
-=======
->>>>>>> 61bcac3af66618dd5255b3f2a57165168d880228
 function renderAnime() {
   const animeList = getFilteredAnime();
   createImageObserver();
