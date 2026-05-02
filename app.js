@@ -402,8 +402,8 @@ const uiText = {
   coverAlt: (title) => `${title} 封面`,
   descriptionExpand: "展开简介",
   descriptionCollapse: "收起简介",
-  magnetExpand: "展开磁力链接",
-  magnetCollapse: "收起磁力链接",
+  magnetExpand: "展开",
+  magnetCollapse: "收起",
   copy: "复制",
   copySuccessMark: "✓",
   copySuccessToast: "已复制磁力链接",
@@ -802,3 +802,4 @@ function scrollToTopWithAnimation() {
 
 initFilters();
 renderAnime();
+console.log('v3.6.1');
