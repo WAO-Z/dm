@@ -386,6 +386,35 @@ const animeData = [
 
     ]
   },
+  {
+    id: 28,
+    title: "叛逆的鲁鲁修",
+    cover: "https://lain.bgm.tv/pic/cover/l/da/8c/793_3y432.jpg",
+    year: "2006",
+    episodes: "25集",
+    genre: "tv",
+    rating: 8.92,
+    description: "2010年，超级大国“布里塔尼亚帝国”（Britannia）为了夺取日本的地下资源而侵略日本，在布里塔尼亚帝国强大的兵器Knightmare进攻下，日本在不到一个月的时间内被征服。日本被剥夺了自由、权利甚至是国家的名字，布里塔尼亚帝国将“日本”改称为“11区”，“日本人”这名词则被11这数字所取代。表面上看来布里塔尼亚帝国的统治似乎牢不可破，但其中早已出现了裂痕。七年后的2017年，在生死边缘获得“Geass”的力量，立志要粉碎布里塔尼亚帝国的黑色皇子鲁路修，以及获得第七世代人型机甲兰斯洛特，立志从帝国内部进行改革的白色骑士枢木朱雀，影响了整个世界。",
+    magnetLinks: [
+      { episode: "[第一季-1-25]", link: "magnet:?xt=urn:btih:ece496c70db12932f67ca3f3aaec7a87ff7580d7&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" },
+      { episode: "[第二季-1-25]", link: "magnet:?xt=urn:btih:7a6a1d13c25aca067014bec8771c25c381ca5962&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" }
+
+    ]
+  },
+  {
+    id: 29,
+    title: "寄生兽 生命的准则",
+    cover: "https://lain.bgm.tv/pic/cover/l/e3/14/88433_5Jl4M.jpg",
+    year: "2014",
+    episodes: "24集",
+    genre: "tv",
+    rating: 8.32,
+    description: "某天于地球上空出现许多孢子，其中诞生的幼虫侵入人体后，可以吞噬掉宿主的头部取而代之，从而管理这个“死掉的身体”，它们能任意变形，其食物便是与寄生体相同的物种。男主角泉新一就是被寄生生物寄生的人类之一，但是由于某种意外，寄生在他体内的生物并没有吃掉他的大脑，而只是取代了他的右手。本性善良正直的泉新一没有被这突如其来的残酷命运击倒，为了被寄生兽杀死的亲友，以及所有人类的未来，他决心与其他完全体寄生兽进行殊死搏斗。",
+    magnetLinks: [
+      { episode: "[BD-HEVC-10bit-1-24]", link: "magnet:?xt=urn:btih:d4bda37e5ef4cc3217b3f1acd9e4d14afdb3723a&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" }
+
+    ]
+  }
 ];
 const genreName = {
   tv: "TV",
