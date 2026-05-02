@@ -401,8 +401,8 @@ const uiText = {
   emptyState: "没有匹配的作品，换个筛选条件试试。",
   coverAlt: (title) => `${title} 封面`,
   descriptionExpand: "展开简介",
-  descriptionCollapse: "收起简介",
-  magnetExpand: "展开",
+  descriptionCollapse: "收起",
+  magnetExpand: "展开磁力链接",
   magnetCollapse: "收起",
   copy: "复制",
   copySuccessMark: "✓",
@@ -802,4 +802,4 @@ function scrollToTopWithAnimation() {
 
 initFilters();
 renderAnime();
-console.log('v3.6.1');
+console.log('v3.6.2');
