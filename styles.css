@@ -2,6 +2,23 @@
    color: inherit;
  }
 
+ nav {
+   display: flex;
+   justify-content: center;
+   align-items: center;
+   gap: 18px;
+   padding: 8px;
+   margin: 30px 0 0;
+ }
+
+ .pagination-button {
+
+   min-height: 38px;
+   padding: 0 12px;
+   border: 1px solid rgba(101, 215, 194, 0.28);
+   border-radius: 8px;
+ }
+
  :root {
    color-scheme: dark;
    --bg: #101419;
@@ -277,7 +294,8 @@
    background: transparent;
  }
 
- .ghost-button {
+ .ghost-button,
+ .pagination-button {
    min-height: 38px;
    padding: 0 12px;
    border: 1px solid rgba(101, 215, 194, 0.28);

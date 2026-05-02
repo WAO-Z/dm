@@ -424,6 +424,7 @@ const genreName = {
 
 const SELECT_ALL_VALUE = "all";
 const DEFAULT_SORT_VALUE = "id";
+const PAGE_SIZE = 12;
 
 const uiText = {
   resultCount: (count) => `找到 ${count} 部作品`,
@@ -453,6 +454,7 @@ const sortFilter = document.querySelector('[data-select="sortFilter"]');
 const customSelects = document.querySelectorAll(".custom-select");
 const resetButton = document.querySelector("#resetButton");
 const resultText = document.querySelector("#resultText");
+const pagination = document.querySelector("#pagination");
 const totalCount = document.querySelector("#totalCount");
 const linkCount = document.querySelector("#linkCount");
 const toast = document.querySelector("#toast");
@@ -460,6 +462,7 @@ const backToTop = document.querySelector("#backToTop");
 
 let toastTimer;
 let imageObserver;
+let currentPage = 1;
 
 // 初始化统计和年份筛选项，避免年份选项写死。
 function initFilters() {
@@ -543,7 +546,7 @@ function initCustomSelects() {
       option.addEventListener("click", () => {
         setSelectValue(select, option.dataset.value);
         closeAllSelects();
-        renderAnime();
+        handleFiltersChanged();
       });
     });
   });
@@ -668,18 +671,75 @@ function createMagnetItem(item) {
   return row;
 }
 
-function renderAnime() {
+function getPageCount(total) {
+  return Math.max(1, Math.ceil(total / PAGE_SIZE));
+}
+
+function createPaginationButton(label, page, { isCurrent = false, isDisabled = false } = {}) {
+  const button = document.createElement("button");
+
+  button.type = "button";
+  button.className = "pagination-button";
+  button.textContent = label;
+  button.disabled = isDisabled;
+
+  if (isCurrent) {
+    button.classList.add("is-current");
+    button.setAttribute("aria-current", "page");
+  }
+
+  button.addEventListener("click", () => {
+    if (isDisabled || page === currentPage) return;
+    currentPage = page;
+    renderAnime({ scrollToResults: true });
+  });
+
+  return button;
+}
+
+function renderPagination(total) {
+  const pageCount = getPageCount(total);
+  const fragment = document.createDocumentFragment();
+
+  pagination.hidden = total <= PAGE_SIZE;
+  pagination.replaceChildren();
+
+  if (total <= PAGE_SIZE) return;
+
+  fragment.append(
+    createPaginationButton("上一页", Math.max(1, currentPage - 1), { isDisabled: currentPage === 1 })
+  );
+
+  for (let page = 1; page <= pageCount; page += 1) {
+    fragment.append(createPaginationButton(String(page), page, { isCurrent: page === currentPage }));
+  }
+
+  fragment.append(
+    createPaginationButton("下一页", Math.min(pageCount, currentPage + 1), { isDisabled: currentPage === pageCount })
+  );
+
+  pagination.append(fragment);
+}
+
+function renderAnime({ scrollToResults = false } = {}) {
   const animeList = getFilteredAnime();
+  const pageCount = getPageCount(animeList.length);
+  const fragment = document.createDocumentFragment();
+
+  currentPage = Math.min(currentPage, pageCount);
+  const pageStart = (currentPage - 1) * PAGE_SIZE;
+  const pageItems = animeList.slice(pageStart, pageStart + PAGE_SIZE);
   createImageObserver();
-  grid.innerHTML = "";
+  grid.replaceChildren();
   resultText.textContent = uiText.resultCount(animeList.length);
+  renderPagination(animeList.length);
 
   if (animeList.length === 0) {
     grid.append(createEmptyState());
     return;
   }
 
-  animeList.forEach((anime, index) => {
+  pageItems.forEach((anime, index) => {
     const card = template.content.firstElementChild.cloneNode(true);
     const cover = card.querySelector(".cover");
     const coverWrap = card.querySelector(".cover-wrap");
@@ -739,9 +799,13 @@ function renderAnime() {
       }
     });
 
-    grid.append(card);
+    fragment.append(card);
     observeCover(cover);
   });
+
+  grid.append(fragment);
+
+  if (scrollToResults) grid.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
 async function copyMagnet(link, button) {
@@ -792,10 +856,16 @@ function resetFilters() {
   setSelectValue(genreFilter, SELECT_ALL_VALUE);
   setSelectValue(yearFilter, SELECT_ALL_VALUE);
   setSelectValue(sortFilter, DEFAULT_SORT_VALUE);
+  currentPage = 1;
   renderAnime();
 }
 
-searchInput.addEventListener("input", renderAnime);
+function handleFiltersChanged() {
+  currentPage = 1;
+  renderAnime();
+}
+
+searchInput.addEventListener("input", handleFiltersChanged);
 
 resetButton.addEventListener("click", resetFilters);
 
