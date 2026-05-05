@@ -414,6 +414,20 @@ const animeData = [
       { episode: "[BD-HEVC-10bit-1-24]", link: "magnet:?xt=urn:btih:d4bda37e5ef4cc3217b3f1acd9e4d14afdb3723a&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" }
 
     ]
+  },
+  {
+    id: 30,
+    title: "只有我不存在的城市",
+    cover: "https://lain.bgm.tv/pic/cover/l/39/2f/137722_Iid43.jpg",
+    year: "2016",
+    episodes: "12集",
+    genre: "tv",
+    rating: 8.31,
+    description: "藤沼悟是一个三流漫画家，但是他却拥有着名为“再上映”（可以穿越到事件发生之前的时间点，阻止事件发生，但失败了会一直重复）的能力。某天，当回到家里的时候他发现了自己母亲遇害的一幕，并且自己被嫁祸为杀人凶手。就在这时候，由于再上映的关系，他突然回到了18年前·小学五年级的时候，而这一刻他不但要拯救母亲，也要为了同学的安全而战……",
+    magnetLinks: [
+      { episode: "[简繁日文字幕][1080P][HEVC MKV]", link: "magnet:?xt=urn:btih:a0792c34d119435b852d9ab5e12509c035634c9f&tr=http%3a%2f%2ft.nyaatracker.com%2fannounce&tr=http%3a%2f%2ftracker.kamigami.org%3a2710%2fannounce&tr=http%3a%2f%2fshare.camoe.cn%3a8080%2fannounce&tr=http%3a%2f%2fopentracker.acgnx.se%2fannounce&tr=http%3a%2f%2fanidex.moe%3a6969%2fannounce&tr=http%3a%2f%2ft.acg.rip%3a6699%2fannounce&tr=https%3a%2f%2ftr.bangumi.moe%3a9696%2fannounce&tr=udp%3a%2f%2ftr.bangumi.moe%3a6969%2fannounce&tr=http%3a%2f%2fopen.acgtracker.com%3a1096%2fannounce&tr=udp%3a%2f%2ftracker.opentrackr.org%3a1337%2fannounce" }
+
+    ]
   }
 ];
 const genreName = {
