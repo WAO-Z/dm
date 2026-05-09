@@ -436,10 +436,12 @@ const genreName = {
   ova: "OVA"
 };
 
+// 常量区：把会被多个函数复用的“固定值”集中管理。
 const SELECT_ALL_VALUE = "all";
 const DEFAULT_SORT_VALUE = "id";
 const PAGE_SIZE = 12;
 
+// 文案区：页面上会动态变化的文字统一放这里，方便后续修改或做多语言。
 const uiText = {
   resultCount: (count) => `找到 ${count} 部作品`,
   emptyState: "没有匹配的作品，换个筛选条件试试。",
@@ -454,11 +456,13 @@ const uiText = {
   copyFailureToast: "复制失败，请手动复制"
 };
 
+// 小图标用内联 SVG 保存，创建卡片元信息时直接插入。
 const metaIcons = {
   calendar: '<svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="3"/></svg>',
   play: '<svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg>'
 };
 
+// DOM 缓存区：启动时先找到常用节点，后面渲染时就不用反复 query。
 const grid = document.querySelector("#animeGrid");
 const template = document.querySelector("#animeCardTemplate");
 const searchInput = document.querySelector("#searchInput");
@@ -527,10 +531,12 @@ function getSelectValue(select) {
   return select.dataset.value;
 }
 
+// 根据类型名取出对应 SVG，没有匹配时返回空字符串。
 function getMetaIcon(type) {
   return metaIcons[type] || "";
 }
 
+// 同步自定义下拉框的内部值、显示文字和 aria-selected 状态。
 function setSelectValue(select, value) {
   const triggerText = select.querySelector(".select-trigger span:first-child");
   const options = select.querySelectorAll('[role="option"]');
@@ -577,6 +583,7 @@ function closeAllSelects() {
   });
 }
 
+// 创建图片懒加载观察器：封面快进入视口时才真正设置 src。
 function createImageObserver() {
   if (imageObserver) imageObserver.disconnect();
 
@@ -598,6 +605,7 @@ function createImageObserver() {
   });
 }
 
+// 如果浏览器支持 IntersectionObserver 就观察图片，否则直接加载。
 function observeCover(cover) {
   if (imageObserver) {
     imageObserver.observe(cover);
@@ -607,6 +615,7 @@ function observeCover(cover) {
   loadCover(cover);
 }
 
+// 把 data-src 写入 src，触发浏览器开始下载图片。
 function loadCover(cover) {
   const coverWrap = cover.closest(".cover-wrap");
 
@@ -615,6 +624,7 @@ function loadCover(cover) {
   cover.src = cover.dataset.src;
 }
 
+// 磁力链接展开需要先从 hidden 状态恢复，再用 scrollHeight 做高度动画。
 function expandMagnetList(list) {
   list.hidden = false;
   list.style.height = "0px";
@@ -631,6 +641,7 @@ function expandMagnetList(list) {
   });
 }
 
+// 折叠时先锁定当前高度，再过渡到 0，动画结束后重新 hidden。
 function collapseMagnetList(list) {
   list.style.height = `${list.scrollHeight}px`;
 
@@ -649,6 +660,7 @@ function collapseMagnetList(list) {
   });
 }
 
+// 没有筛选结果时显示一个空状态，而不是留下空白页面。
 function createEmptyState() {
   const empty = document.createElement("div");
   empty.className = "empty-state";
@@ -656,6 +668,7 @@ function createEmptyState() {
   return empty;
 }
 
+// 创建年份/集数这类元信息，iconType 决定前面的图标。
 function createMetaItem(iconType, text) {
   const item = document.createElement("span");
   const value = document.createElement("span");
@@ -668,6 +681,7 @@ function createMetaItem(iconType, text) {
   return item;
 }
 
+// 创建单条磁力链接行，每行包含剧集标签和复制按钮。
 function createMagnetItem(item) {
   const row = document.createElement("div");
   const episode = document.createElement("span");
@@ -685,10 +699,12 @@ function createMagnetItem(item) {
   return row;
 }
 
+// 总页数至少为 1，避免空结果时分页计算出现 0 页。
 function getPageCount(total) {
   return Math.max(1, Math.ceil(total / PAGE_SIZE));
 }
 
+// 创建一个分页按钮，点击后切换页码并重新渲染列表。
 function createPaginationButton(label, page, { isCurrent = false, isDisabled = false } = {}) {
   const button = document.createElement("button");
 
@@ -711,6 +727,7 @@ function createPaginationButton(label, page, { isCurrent = false, isDisabled = f
   return button;
 }
 
+// 根据筛选后的总数渲染分页；少于一页时隐藏分页区域。
 function renderPagination(total) {
   const pageCount = getPageCount(total);
   const fragment = document.createDocumentFragment();
@@ -735,6 +752,7 @@ function renderPagination(total) {
   pagination.append(fragment);
 }
 
+// 主渲染函数：拿到筛选数据，分页切片，然后用 template 生成卡片。
 function renderAnime({ scrollToResults = false } = {}) {
   const animeList = getFilteredAnime();
   const pageCount = getPageCount(animeList.length);
@@ -785,12 +803,14 @@ function renderAnime({ scrollToResults = false } = {}) {
     card.querySelector(".rating-badge").textContent = anime.rating.toFixed(1);
     description.textContent = anime.description;
     descriptionToggle.textContent = uiText.descriptionExpand;
+    descriptionToggle.setAttribute("aria-expanded", "false");
     magnetToggle.querySelector("span").textContent = uiText.magnetExpand;
 
     // 简介默认收起为两行，按钮负责切换完整文本。
     descriptionToggle.addEventListener("click", () => {
       const isOpen = description.classList.toggle("is-open");
       descriptionBlock.classList.toggle("is-open", isOpen);
+      descriptionToggle.setAttribute("aria-expanded", String(isOpen));
       descriptionToggle.textContent = isOpen ? uiText.descriptionCollapse : uiText.descriptionExpand;
     });
 
@@ -822,6 +842,7 @@ function renderAnime({ scrollToResults = false } = {}) {
   if (scrollToResults) grid.scrollIntoView({ behavior: "smooth", block: "start" });
 }
 
+// 复制磁力链接：优先使用 Clipboard API，失败时退回到传统 textarea 方案。
 async function copyMagnet(link, button) {
   try {
     await navigator.clipboard.writeText(link);
@@ -844,6 +865,7 @@ async function copyMagnet(link, button) {
   }
 }
 
+// 复制成功后短暂禁用按钮，避免用户误以为没有反馈而连续点击。
 function markCopySuccess(button) {
   const originalText = button.textContent;
 
@@ -858,6 +880,7 @@ function markCopySuccess(button) {
   }, 1200);
 }
 
+// 轻提示只显示一段时间；重复触发时会重置计时器。
 function showToast(message) {
   toast.textContent = message;
   toast.classList.add("is-visible");
@@ -865,6 +888,7 @@ function showToast(message) {
   toastTimer = setTimeout(() => toast.classList.remove("is-visible"), 1600);
 }
 
+// 清空所有筛选条件，并回到默认排序。
 function resetFilters() {
   searchInput.value = "";
   setSelectValue(genreFilter, SELECT_ALL_VALUE);
@@ -874,6 +898,7 @@ function resetFilters() {
   renderAnime();
 }
 
+// 任意筛选条件变化后，都回到第一页重新渲染。
 function handleFiltersChanged() {
   currentPage = 1;
   renderAnime();
@@ -900,6 +925,7 @@ function scrollToTopWithAnimation() {
     return 1 - Math.pow(1 - progress, 3);
   }
 
+  // requestAnimationFrame 让滚动动画跟随浏览器刷新节奏，比较顺滑。
   function step(currentTime) {
     const elapsed = currentTime - startTime;
     const progress = Math.min(elapsed / duration, 1);
@@ -913,6 +939,7 @@ function scrollToTopWithAnimation() {
   requestAnimationFrame(step);
 }
 
+// 页面入口：先初始化筛选器和统计，再渲染首屏卡片。
 initFilters();
 renderAnime();
 console.log('v3.6.2');

@@ -7,11 +7,13 @@
   <title>动漫磁力链接分享平台</title>
   <link rel="icon" type="image/svg+xml" href="./favicon.svg">
   <link rel="preconnect" href="https://lain.bgm.tv">
-  <link rel="stylesheet" href="./styles.css?v4.0.0">
+  <link rel="stylesheet" href="./styles.css?v4.1.0">
 </head>
 
 <body>
+  <!-- 主容器：页面所有可见内容都放在这里，便于统一控制最大宽度。 -->
   <main class="app-shell">
+    <!-- 顶部介绍区：展示站点标题、数据来源和资源统计。 -->
     <section class="hero-panel" aria-labelledby="page-title">
       <div class="hero-copy">
         <p class="eyebrow">Anime Magnet Shelf</p>
@@ -27,6 +29,7 @@
       </div>
     </section>
 
+    <!-- 筛选工具栏：输入框负责关键字搜索，自定义下拉框负责分类、年份和排序。 -->
     <section class="toolbar" aria-label="筛选工具">
       <label class="search-box">
         <span>搜索</span>
@@ -79,13 +82,16 @@
       </label>
     </section>
 
+    <!-- aria-live 会把筛选结果数量变化通知给辅助技术。 -->
     <section class="result-strip" aria-live="polite">
       <p id="resultText">正在载入作品...</p>
       <button class="ghost-button" id="resetButton" type="button">重置筛选</button>
     </section>
 
+    <!-- JS 会把 template 克隆成卡片并插入到这个网格里。 -->
     <section class="anime-grid" id="animeGrid" aria-label="动漫列表"></section>
 
+    <!-- 分页按钮由 JS 根据筛选后的数量动态生成。 -->
     <nav class="pagination" id="pagination" aria-label="分页"></nav>
 
     <footer class="site-footer">
@@ -94,9 +100,11 @@
     </footer>
   </main>
 
+  <!-- 复制磁力链接后的轻提示。 -->
   <div class="toast" id="toast" role="status" aria-live="polite">已复制磁力链接</div>
   <button class="back-to-top" id="backToTop" type="button" aria-label="回到顶部">↑</button>
 
+  <!-- 卡片模板不会直接显示，renderAnime 会 clone 它来生成每一张卡片。 -->
   <template id="animeCardTemplate">
     <article class="anime-card">
       <div class="cover-wrap">
@@ -112,7 +120,7 @@
 
         <div class="description-block">
           <p class="description"></p>
-          <button class="text-button description-toggle" type="button">展开简介</button>
+          <button class="text-button description-toggle" type="button" aria-expanded="false">展开简介</button>
         </div>
 
         <div class="magnet-block">
@@ -126,7 +134,7 @@
     </article>
   </template>
 
-  <script src="./app.js?v4.0.0"></script>
+  <script src="./app.js?v4.1.0"></script>
 </body>
 
 </html>
