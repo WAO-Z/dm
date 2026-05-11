@@ -477,6 +477,7 @@ const totalCount = document.querySelector("#totalCount");
 const linkCount = document.querySelector("#linkCount");
 const toast = document.querySelector("#toast");
 const backToTop = document.querySelector("#backToTop");
+const supportsReplaceChildren = typeof Element.prototype.replaceChildren === "function";
 
 let toastTimer;
 let imageObserver;
@@ -534,6 +535,59 @@ function getSelectValue(select) {
 // 根据类型名取出对应 SVG，没有匹配时返回空字符串。
 function getMetaIcon(type) {
   return metaIcons[type] || "";
+}
+
+function replaceElementChildren(element, ...children) {
+  if (supportsReplaceChildren) {
+    element.replaceChildren(...children);
+    return;
+  }
+
+  while (element.firstChild) {
+    element.removeChild(element.firstChild);
+  }
+
+  children.forEach((child) => {
+    if (child == null) return;
+    element.appendChild(typeof child === "string" ? document.createTextNode(child) : child);
+  });
+}
+
+function showLegacyBrowserDialog() {
+  const overlay = document.createElement("div");
+  const dialog = document.createElement("section");
+  const eyebrow = document.createElement("p");
+  const title = document.createElement("h2");
+  const message = document.createElement("p");
+  const action = document.createElement("button");
+
+  overlay.className = "browser-upgrade-modal";
+  overlay.setAttribute("role", "presentation");
+  dialog.className = "browser-upgrade-dialog";
+  dialog.setAttribute("role", "dialog");
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute("aria-labelledby", "browserUpgradeTitle");
+
+  eyebrow.className = "browser-upgrade-eyebrow";
+  eyebrow.textContent = "\u6d4f\u89c8\u5668\u7248\u672c\u8f83\u65e7";
+  title.id = "browserUpgradeTitle";
+  title.textContent = "\u5efa\u8bae\u5347\u7ea7\u6d4f\u89c8\u5668";
+  message.textContent = "\u5f53\u524d\u6d4f\u89c8\u5668\u7f3a\u5c11\u90e8\u5206\u73b0\u4ee3\u529f\u80fd\uff0c\u9875\u9762\u5df2\u542f\u7528\u517c\u5bb9\u6a21\u5f0f\u3002\u4e3a\u4e86\u66f4\u7a33\u5b9a\u7684\u641c\u7d22\u3001\u7b5b\u9009\u548c\u590d\u5236\u4f53\u9a8c\uff0c\u8bf7\u5c3d\u5feb\u5347\u7ea7 Chrome\u3001Edge\u3001Firefox \u6216 Safari\u3002";
+  action.type = "button";
+  action.className = "browser-upgrade-action";
+  action.textContent = "\u6211\u77e5\u9053\u4e86";
+
+  action.addEventListener("click", () => {
+    if (overlay.parentNode) overlay.parentNode.removeChild(overlay);
+  });
+
+  dialog.appendChild(eyebrow);
+  dialog.appendChild(title);
+  dialog.appendChild(message);
+  dialog.appendChild(action);
+  overlay.appendChild(dialog);
+  document.body.appendChild(overlay);
+  action.focus();
 }
 
 // 同步自定义下拉框的内部值、显示文字和 aria-selected 状态。
@@ -733,7 +787,7 @@ function renderPagination(total) {
   const fragment = document.createDocumentFragment();
 
   pagination.hidden = total <= PAGE_SIZE;
-  pagination.replaceChildren();
+  replaceElementChildren(pagination);
 
   if (total <= PAGE_SIZE) return;
 
@@ -762,7 +816,7 @@ function renderAnime({ scrollToResults = false } = {}) {
   const pageStart = (currentPage - 1) * PAGE_SIZE;
   const pageItems = animeList.slice(pageStart, pageStart + PAGE_SIZE);
   createImageObserver();
-  grid.replaceChildren();
+  replaceElementChildren(grid);
   resultText.textContent = uiText.resultCount(animeList.length);
   renderPagination(animeList.length);
 
@@ -796,7 +850,8 @@ function renderAnime({ scrollToResults = false } = {}) {
     cover.dataset.src = anime.cover;
     card.querySelector("h2").textContent = anime.title;
     card.querySelector(".genre-pill").textContent = genreName[anime.genre] || anime.genre;
-    card.querySelector(".meta").replaceChildren(
+    replaceElementChildren(
+      card.querySelector(".meta"),
       createMetaItem("calendar", anime.year),
       createMetaItem("play", anime.episodes)
     );
@@ -941,5 +996,6 @@ function scrollToTopWithAnimation() {
 
 // 页面入口：先初始化筛选器和统计，再渲染首屏卡片。
 initFilters();
+if (!supportsReplaceChildren) showLegacyBrowserDialog();
 renderAnime();
-console.log('v3.6.2');
+console.log('v4.1.0');
