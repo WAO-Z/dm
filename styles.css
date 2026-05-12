@@ -565,7 +565,7 @@
    padding: 0;
  }
 
- /* 磁力链接区默认折叠，展开时由 JS 计算高度做动画。 */
+ /* 磁力链接区默认折叠，展开时只做合成层动画，避免低配设备频繁重排。 */
  .magnet-block {
    border-top: 1px solid var(--line);
    padding-top: 12px;
@@ -596,13 +596,13 @@
  .magnet-list {
    display: grid;
    gap: 10px;
-   height: 0;
-   margin-top: 0;
-   overflow: hidden;
+   margin-top: 12px;
    opacity: 0;
    transform: translateY(-6px);
-   will-change: height, opacity, transform;
-   transition: height 220ms ease, margin-top 180ms ease, opacity 180ms ease, transform 180ms ease;
+   pointer-events: none;
+   contain: layout paint;
+   will-change: opacity, transform;
+   transition: opacity 160ms ease, transform 160ms ease;
  }
 
  .magnet-list[hidden] {
@@ -611,8 +611,8 @@
 
  /* 磁力链接展开动画：默认折叠，点击后滑入显示。 */
  .magnet-list.is-open {
-   margin-top: 12px;
    opacity: 1;
+   pointer-events: auto;
    transform: translateY(0);
  }
 
@@ -720,8 +720,14 @@
 
 .browser-upgrade-modal {
   position: fixed;
-  inset: 0;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
   z-index: 40;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   display: grid;
   place-items: center;
   padding: 24px;
@@ -730,7 +736,8 @@
 }
 
 .browser-upgrade-dialog {
-  width: min(460px, 100%);
+  width: 100%;
+  max-width: 460px;
   padding: 26px;
   border: 1px solid rgba(101, 215, 194, 0.32);
   border-radius: 8px;

@@ -478,6 +478,8 @@ const linkCount = document.querySelector("#linkCount");
 const toast = document.querySelector("#toast");
 const backToTop = document.querySelector("#backToTop");
 const supportsReplaceChildren = typeof Element.prototype.replaceChildren === "function";
+const forceLegacyBrowserDialog = window.location.search.indexOf("legacyBrowser=1") !== -1;
+const shouldShowLegacyBrowserDialog = forceLegacyBrowserDialog || !supportsReplaceChildren || !("IntersectionObserver" in window);
 
 let toastTimer;
 let imageObserver;
@@ -678,40 +680,40 @@ function loadCover(cover) {
   cover.src = cover.dataset.src;
 }
 
-// 磁力链接展开需要先从 hidden 状态恢复，再用 scrollHeight 做高度动画。
+// 记录折叠清理定时器，避免快速连续点击时列表状态和按钮状态错位。
+const magnetHideTimers = new WeakMap();
+
+// 磁力链接展开不再读取 scrollHeight，避免低配置设备在高度动画中反复重排。
 function expandMagnetList(list) {
+  const hideTimer = magnetHideTimers.get(list);
+
+  if (hideTimer) {
+    clearTimeout(hideTimer);
+    magnetHideTimers.delete(list);
+  }
+
   list.hidden = false;
-  list.style.height = "0px";
 
   requestAnimationFrame(() => {
     list.classList.add("is-open");
-    list.style.height = `${list.scrollHeight}px`;
-  });
-
-  list.addEventListener("transitionend", function handleExpand(event) {
-    if (event.propertyName !== "height") return;
-    list.removeEventListener("transitionend", handleExpand);
-    if (list.classList.contains("is-open")) list.style.height = "auto";
   });
 }
 
-// 折叠时先锁定当前高度，再过渡到 0，动画结束后重新 hidden。
 function collapseMagnetList(list) {
-  list.style.height = `${list.scrollHeight}px`;
+  const hideTimer = magnetHideTimers.get(list);
 
-  requestAnimationFrame(() => {
-    list.classList.remove("is-open");
-    list.style.height = "0px";
-  });
+  if (hideTimer) clearTimeout(hideTimer);
 
-  list.addEventListener("transitionend", function handleCollapse(event) {
-    if (event.propertyName !== "height") return;
-    list.removeEventListener("transitionend", handleCollapse);
+  list.classList.remove("is-open");
+
+  const cleanup = () => {
     if (!list.classList.contains("is-open")) {
       list.hidden = true;
-      list.style.height = "";
     }
-  });
+    magnetHideTimers.delete(list);
+  };
+
+  magnetHideTimers.set(list, setTimeout(cleanup, 190));
 }
 
 // 没有筛选结果时显示一个空状态，而不是留下空白页面。
@@ -833,6 +835,7 @@ function renderAnime({ scrollToResults = false } = {}) {
     const descriptionBlock = card.querySelector(".description-block");
     const descriptionToggle = card.querySelector(".description-toggle");
     const magnetToggle = card.querySelector(".magnet-toggle");
+    const magnetToggleText = magnetToggle.querySelector("span");
     const magnetList = card.querySelector(".magnet-list");
 
     card.style.animationDelay = `${Math.min(index * 70, 420)}ms`;
@@ -859,7 +862,7 @@ function renderAnime({ scrollToResults = false } = {}) {
     description.textContent = anime.description;
     descriptionToggle.textContent = uiText.descriptionExpand;
     descriptionToggle.setAttribute("aria-expanded", "false");
-    magnetToggle.querySelector("span").textContent = uiText.magnetExpand;
+    magnetToggleText.textContent = uiText.magnetExpand;
 
     // 简介默认收起为两行，按钮负责切换完整文本。
     descriptionToggle.addEventListener("click", () => {
@@ -879,7 +882,7 @@ function renderAnime({ scrollToResults = false } = {}) {
       const willExpand = !isExpanded;
 
       magnetToggle.setAttribute("aria-expanded", String(willExpand));
-      magnetToggle.querySelector("span").textContent = willExpand ? uiText.magnetCollapse : uiText.magnetExpand;
+      magnetToggleText.textContent = willExpand ? uiText.magnetCollapse : uiText.magnetExpand;
 
       if (willExpand) {
         expandMagnetList(magnetList);
@@ -996,6 +999,6 @@ function scrollToTopWithAnimation() {
 
 // 页面入口：先初始化筛选器和统计，再渲染首屏卡片。
 initFilters();
-if (!supportsReplaceChildren) showLegacyBrowserDialog();
+if (shouldShowLegacyBrowserDialog) showLegacyBrowserDialog();
 renderAnime();
-console.log('v4.1.0');
+console.log('v4.3.0');
