@@ -440,6 +440,7 @@ const genreName = {
 const SELECT_ALL_VALUE = "all";
 const DEFAULT_SORT_VALUE = "id";
 const PAGE_SIZE = 12;
+const SEARCH_INDEX_SEPARATOR = " ";
 
 // 文案区：页面上会动态变化的文字统一放这里，方便后续修改或做多语言。
 const uiText = {
@@ -461,6 +462,14 @@ const metaIcons = {
   calendar: '<svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><path d="M8 2v4"/><path d="M16 2v4"/><path d="M3 10h18"/><rect x="3" y="4" width="18" height="18" rx="3"/></svg>',
   play: '<svg class="meta-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="m10 8 6 4-6 4V8Z" fill="currentColor" stroke="none"/></svg>'
 };
+
+// 搜索索引只在启动时生成一次，后续输入关键字时不用反复拼接 title/year/description。
+const searchableAnimeData = animeData.map((anime) => ({
+  ...anime,
+  searchText: [anime.title, anime.year, anime.description]
+    .join(SEARCH_INDEX_SEPARATOR)
+    .toLowerCase()
+}));
 
 // DOM 缓存区：启动时先找到常用节点，后面渲染时就不用反复 query。
 const grid = document.querySelector("#animeGrid");
@@ -511,27 +520,27 @@ function getFilteredAnime() {
   const yearValue = getSelectValue(yearFilter);
   const sortValue = getSelectValue(sortFilter);
 
-  return animeData
+  return searchableAnimeData
     .filter((anime) => {
-      const matchesKeyword = [anime.title, anime.year, anime.description]
-        .join(" ")
-        .toLowerCase()
-        .includes(keyword);
+      const matchesKeyword = anime.searchText.includes(keyword);
       const matchesGenre = genreValue === SELECT_ALL_VALUE || anime.genre === genreValue;
       const matchesYear = yearValue === SELECT_ALL_VALUE || anime.year === yearValue;
 
       return matchesKeyword && matchesGenre && matchesYear;
     })
-    .sort((a, b) => {
-      if (sortValue === DEFAULT_SORT_VALUE) return a.id - b.id;
-      if (sortValue === "year") return Number(b.year) - Number(a.year);
-      if (sortValue === "title") return a.title.localeCompare(b.title, "zh-CN");
-      return b.rating - a.rating;
-    });
+    .sort((a, b) => compareAnimeBySort(a, b, sortValue));
 }
 
 function getSelectValue(select) {
   return select.dataset.value;
+}
+
+// 把排序规则抽成独立函数，render/filter 只关心“拿到列表”，排序细节集中在这里。
+function compareAnimeBySort(a, b, sortValue) {
+  if (sortValue === DEFAULT_SORT_VALUE) return a.id - b.id;
+  if (sortValue === "year") return Number(b.year) - Number(a.year);
+  if (sortValue === "title") return a.title.localeCompare(b.title, "zh-CN");
+  return b.rating - a.rating;
 }
 
 // 根据类型名取出对应 SVG，没有匹配时返回空字符串。
@@ -629,6 +638,11 @@ function initCustomSelects() {
 
   document.addEventListener("click", (event) => {
     if (!event.target.closest(".custom-select")) closeAllSelects();
+  });
+
+  // Esc 是网页下拉菜单的通用退出方式，键盘用户不用移动鼠标也能关闭菜单。
+  document.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") closeAllSelects();
   });
 }
 
@@ -749,7 +763,7 @@ function createMagnetItem(item) {
   copyButton.className = "copy-button";
   copyButton.type = "button";
   copyButton.textContent = uiText.copy;
-  copyButton.addEventListener("click", (event) => copyMagnet(item.link, event.currentTarget));
+  copyButton.dataset.link = item.link;
 
   row.append(episode, copyButton);
   return row;
@@ -872,8 +886,18 @@ function renderAnime({ scrollToResults = false } = {}) {
       descriptionToggle.textContent = isOpen ? uiText.descriptionCollapse : uiText.descriptionExpand;
     });
 
+    // 多条磁力链接先放进 fragment，再一次性插入 DOM，减少浏览器重复计算布局。
+    const magnetFragment = document.createDocumentFragment();
     anime.magnetLinks.forEach((item) => {
-      magnetList.append(createMagnetItem(item));
+      magnetFragment.append(createMagnetItem(item));
+    });
+    magnetList.append(magnetFragment);
+
+    // 事件委托：整组磁力链接只挂一个监听器，比每个复制按钮都挂监听器更省。
+    magnetList.addEventListener("click", (event) => {
+      const copyButton = event.target.closest(".copy-button");
+      if (!copyButton || !magnetList.contains(copyButton)) return;
+      copyMagnet(copyButton.dataset.link, copyButton);
     });
 
     // 磁力链接默认折叠，用户点击后才展示。
@@ -1001,4 +1025,4 @@ function scrollToTopWithAnimation() {
 initFilters();
 if (shouldShowLegacyBrowserDialog) showLegacyBrowserDialog();
 renderAnime();
-console.log('v4.3.0');
+console.log('v4.4.0');

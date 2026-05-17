@@ -3,24 +3,6 @@
    color: inherit;
  }
 
- /* 早期导航样式的备份，暂时不参与页面渲染。 */
- /* nav {
-   display: flex;
-   justify-content: center;
-   align-items: center;
-   gap: 18px;
-   padding: 8px;
-   margin: 30px 0 0;
- }
-
- .pagination-button {
-
-   min-height: 38px;
-   padding: 0 12px;
-   border: 1px solid rgba(101, 215, 194, 0.28);
-   border-radius: 8px;
- } */
-
  /* 主题变量集中放在 :root，后面修改配色时只需要改这里。 */
  :root {
    color-scheme: dark;
@@ -713,83 +695,81 @@
    transition: opacity 180ms ease, transform 180ms ease;
  }
 
-.toast.is-visible {
-  transform: translate(-50%, 0);
-  opacity: 1;
-}
+ .toast.is-visible {
+   transform: translate(-50%, 0);
+   opacity: 1;
+ }
 
-.browser-upgrade-modal {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  left: 0;
-  z-index: 40;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  display: grid;
-  place-items: center;
-  padding: 24px;
-  background: rgba(8, 11, 15, 0.68);
-  backdrop-filter: blur(12px);
-}
+ /* 旧浏览器提示弹窗：JS 检测到缺少关键 API 时才会动态创建。 */
+ .browser-upgrade-modal {
+   position: fixed;
+   top: 0;
+   right: 0;
+   bottom: 0;
+   left: 0;
+   z-index: 40;
+   display: grid;
+   place-items: center;
+   padding: 24px;
+   background: rgba(8, 11, 15, 0.68);
+   backdrop-filter: blur(12px);
+ }
 
-.browser-upgrade-dialog {
-  width: 100%;
-  max-width: 460px;
-  padding: 26px;
-  border: 1px solid rgba(101, 215, 194, 0.32);
-  border-radius: 8px;
-  color: var(--text);
-  background:
-    linear-gradient(145deg, rgba(28, 36, 46, 0.98), rgba(16, 21, 28, 0.98)),
-    var(--panel-strong);
-  box-shadow: var(--shadow);
-}
+ .browser-upgrade-dialog {
+   width: 100%;
+   max-width: 460px;
+   padding: 26px;
+   border: 1px solid rgba(101, 215, 194, 0.32);
+   border-radius: 8px;
+   color: var(--text);
+   background:
+     linear-gradient(145deg, rgba(28, 36, 46, 0.98), rgba(16, 21, 28, 0.98)),
+     var(--panel-strong);
+   box-shadow: var(--shadow);
+ }
 
-.browser-upgrade-eyebrow {
-  margin: 0 0 10px;
-  color: var(--accent);
-  font-size: 0.78rem;
-  font-weight: 800;
-  letter-spacing: 0.12em;
-}
+ .browser-upgrade-eyebrow {
+   margin: 0 0 10px;
+   color: var(--accent);
+   font-size: 0.78rem;
+   font-weight: 800;
+   letter-spacing: 0.12em;
+ }
 
-.browser-upgrade-dialog h2 {
-  margin: 0;
-  font-size: 1.45rem;
-  line-height: 1.25;
-}
+ .browser-upgrade-dialog h2 {
+   margin: 0;
+   font-size: 1.45rem;
+   line-height: 1.25;
+ }
 
-.browser-upgrade-dialog p:not(.browser-upgrade-eyebrow) {
-  margin: 14px 0 0;
-  color: var(--muted);
-  line-height: 1.7;
-}
+ .browser-upgrade-dialog p:not(.browser-upgrade-eyebrow) {
+   margin: 14px 0 0;
+   color: var(--muted);
+   line-height: 1.7;
+ }
 
-.browser-upgrade-action {
-  width: 100%;
-  min-height: 44px;
-  margin-top: 22px;
-  border: 0;
-  border-radius: 8px;
-  color: #101419;
-  font-weight: 800;
-  background: linear-gradient(135deg, var(--accent), var(--accent-2));
-  box-shadow: 0 14px 32px rgba(101, 215, 194, 0.22);
-  transition: transform 180ms ease, box-shadow 180ms ease;
-}
+ .browser-upgrade-action {
+   width: 100%;
+   min-height: 44px;
+   margin-top: 22px;
+   border: 0;
+   border-radius: 8px;
+   color: #101419;
+   font-weight: 800;
+   background: linear-gradient(135deg, var(--accent), var(--accent-2));
+   box-shadow: 0 14px 32px rgba(101, 215, 194, 0.22);
+   transition: transform 180ms ease, box-shadow 180ms ease;
+ }
 
-.browser-upgrade-action:focus {
-  outline: 3px solid rgba(101, 215, 194, 0.24);
-  outline-offset: 3px;
-}
+ .browser-upgrade-action:focus {
+   outline: 3px solid rgba(101, 215, 194, 0.24);
+   outline-offset: 3px;
+ }
 
-.browser-upgrade-action:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 42px rgba(101, 215, 194, 0.28);
-}
+ .browser-upgrade-action:hover {
+   transform: translateY(-1px);
+   box-shadow: 0 18px 42px rgba(101, 215, 194, 0.28);
+ }
 
  /* 回到顶部按钮：滚动到一定距离后由 JS 加 is-visible。 */
  .back-to-top {
